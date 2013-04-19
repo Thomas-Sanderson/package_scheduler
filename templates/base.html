@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<!--	<link rel='stylesheet' href="../static/assets/css/boostrap.css"> -->
+
+	<title>
+	{% block title %}
+	{% endblock %}
+	</title>
+</head>
+
+<body>
+
+	<!-- Flash messages -->
+   {% with messages = get_flashed_messages() %}
+       {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+           <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% block body %}
+    {% endblock %}
+
+<footer><p>
+Package Scheduler
+| A Product of <a href="http://adicu.com/">ADI</a>
+</p></footer>
+
+
+</body>
+
+</html>
+
