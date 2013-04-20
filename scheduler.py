@@ -13,7 +13,7 @@ app.config.from_object('flask_settings')
 """
 Connects to the DB and creates a cursor
 """
-def get_db():
+def connect_db():
    g.db = lite.connect('data.db')
    g.cursor = g.db.cursor()
 
@@ -21,7 +21,7 @@ def get_db():
 """
 Closes DB connections and cursor
 """
-def teardown(exception):
+def close_db():
     if hasattr(g, 'cursor'):
         g.c.close()
     if hasattr(g, 'db'):
@@ -58,6 +58,8 @@ Logs the appointment into the database
 
 @app.route('/schedule')
 def appointment():
+
+
     return render_termplate('choose.html')
  
 
