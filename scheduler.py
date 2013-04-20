@@ -1,10 +1,29 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, \
+	url_for, g
+import sqlite3 as lite
 import requests
+from allotment import allotment
+import setup_db
 
 
 app = Flask(__name__)
 app.config.from_object('flask_settings')
 
+
+@app.before_request
+def before():
+    g.db = lite.connect('data.db')
+
+
+@app.teardown_request
+def teardown(exception):
+    if hasattr(g, 'db'):
+        g.db.close()
+
+
+"""
+Uses a POST request to determine if the user has a package waiting for them
+"""
 def has_package():
     return True
 
@@ -20,6 +39,13 @@ def logged_in():
         return redirect(url_for('home'))
 
 
+"""
+Logs the appointment into the database
+"""
+@app.route('/log_appointment', methods=['POST'])
+
+
+
 @app.route('/schedule')
 def appointment():
  
@@ -32,8 +58,8 @@ def appointment():
 def home():
     return render_template('home.html')
 
-
 if __name__ == '__main__':
+    setup_db.setup()
     app.run()
 
 
