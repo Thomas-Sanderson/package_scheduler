@@ -3,17 +3,17 @@
 <html>
 
 <head>
-	<!--	<link rel='stylesheet' href="../static/assets/css/boostrap.css"> -->
+  <!--<link rel='stylesheet' href="../static/assets/css/boostrap.css"> -->
 
-	<title>
-	{% block title %}
-	{% endblock %}
-	</title>
+  <title>
+  {% block title %}
+  {% endblock %}
+  </title>
 </head>
 
 <body>
 
-	<!-- Flash messages -->
+  <!-- Flash messages -->
    {% with messages = get_flashed_messages() %}
        {% if messages %}
         <ul class=flashes>
