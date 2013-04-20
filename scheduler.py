@@ -10,13 +10,20 @@ app = Flask(__name__)
 app.config.from_object('flask_settings')
 
 
-@app.before_request
-def before():
-    g.db = lite.connect('data.db')
+"""
+Connects to the DB and creates a cursor
+"""
+def get_db():
+   g.db = lite.connect('data.db')
+   g.cursor = g.db.cursor()
 
 
-@app.teardown_request
+"""
+Closes DB connections and cursor
+"""
 def teardown(exception):
+    if hasattr(g, 'cursor'):
+        g.c.close()
     if hasattr(g, 'db'):
         g.db.close()
 
@@ -25,6 +32,9 @@ def teardown(exception):
 Uses a POST request to determine if the user has a package waiting for them
 """
 def has_package():
+    """
+    TO BE IMPLEMENTED
+    """
     return True
 
 
@@ -48,19 +58,15 @@ Logs the appointment into the database
 
 @app.route('/schedule')
 def appointment():
- 
     return render_termplate('choose.html')
  
-
-
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
+
 if __name__ == '__main__':
     setup_db.setup()
     app.run()
-
-
 
