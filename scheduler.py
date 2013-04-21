@@ -8,7 +8,7 @@ import setup_db
 
 
 app = Flask(__name__)
-app.config.from_object('flask_settings')
+app.config.from_object('package_app_settings')
 
 
 def connect_db():

@@ -35,7 +35,7 @@ nosetests.xml
 .pydevproject
 
 # Flask
-flask_settings.py
+package_app_settings.py
 include/
 .Python
 *.db
