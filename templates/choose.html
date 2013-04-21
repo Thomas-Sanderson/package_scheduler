@@ -1,8 +1,37 @@
+{% extends "base.html" %}
 
 {% block title %}
 Choose
 {% endblock %}
 
 {% block body %}
+
+<table>
+	<tr>
+		<th>day</th>
+		<th>time</th>
+		<th>00</th>
+		<th>15</th>
+		<th>30</th>
+		<th>45</th>
+	</tr>
+
+	{% for day in app %}
+		<tr>
+			<td>{{ week[loop.index0] }}</td>
+			{% for hour in day %}
+				{% if not loop.first %}
+					<td></td>
+				{% endif %}
+				<td>{{ loop.index0 + 9 }}</td>
+				{% for minute in hour %}
+					<td>{{minute}}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	{% endfor %}
+
+
+</table>
 
 {% endblock %}
