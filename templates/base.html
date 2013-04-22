@@ -3,6 +3,7 @@
 <html>
 
 <head>
+  <link rel='stylesheet' href="../static/assets/css/bootstrap.css">
   <link rel='stylesheet' href="../static/assets/css/style.css">
 
   <title>
@@ -11,27 +12,51 @@
   </title>
 </head>
 
-<body>
 
-  <!-- Flash messages -->
-   {% with messages = get_flashed_messages() %}
-       {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-           <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
+<body class="preview">
+  <div id="wrap">
+  
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="{{ url_for('home') }}">Package Scheduler</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="page-header">
+        <!-- Flash messages -->
+         {% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+          {% endwith %}
+      </div> <!-- end page header --> 
+
 
     {% block body %}
     {% endblock %}
 
-<footer><p>
-Package Scheduler
-| A Product of <a href="http://adicu.com/">ADI</a>
-</p></footer>
+        <div id="push"></div>    
+    </div>  
 
+</div> <!-- End Wrap -->
+
+  <div id="footer">
+    <div class="container">
+      <p>
+      Package Scheduler
+      | A Product of <a href="http://adicu.com/">ADI</a>
+      </p>
+    </div>
+  </div>
 
 </body>
 
