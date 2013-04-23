@@ -6,34 +6,44 @@ Choose
 
 {% block body %}
 
-<table>
-    <tr>
-        <th>day</th>
-        <th>time</th>
+
+<form name="appointment" action"/log_appointment" method="POST">
+{% for day in app %}
+{% set weekloop = loop %}
+<div class="span4">
+  <p><strong>{{ week[loop.index0] }}</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>hour</th>
         <th>00</th>
         <th>15</th>
         <th>30</th>
         <th>45</th>
-    </tr>
-
-    {% for day in app %}
-        <tr>
-            <td>{{ week[loop.index0] }}</td>
-            {% for hour in day %}
-                {% if not loop.first %}
-                    <td></td>
-                {% endif %}
-                <td>{{ loop.index0 + 9 }}</td>
-                {% for minute in hour %}
-                    <td class="busy-{{minute}}">
-                        {{minute}}
-                    </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tr><td>&nbsp;</td><tr>
+      </tr>
+    </thead>
+    <tbody>
+    {% for hour in day %}
+      <tr>          
+        <td>{{ (loop.index0 + 9)%12 }}</td>
+        {% for minute in hour %}
+          <td class="busy-{{minute}}">
+            <input type="radio" name="choice" value="{{ (week[weekloop.index0],(loop.index+9)%12, minute) }}"
+              {% if minute == 0 %} disabled {% endif %} >
+              {{minute}}
+            </input>
+          </td>
+        {% endfor %}  
+      </tr> 
     {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+{% endfor %}
 
-</table>
+<input type="submit" value="Make Appointment">
+
+</form>
 
 {% endblock %}

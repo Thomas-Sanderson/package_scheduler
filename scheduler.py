@@ -5,6 +5,7 @@ import sqlite3 as lite
 from allotment import allotment
 import setup_db
 
+num_days = 5
 
 
 app = Flask(__name__)
@@ -49,23 +50,30 @@ def logged_in():
         flash("Sorry, you don't have a pacakge waiting for you.")
         return redirect(url_for('home'))
 
-
-@app.route('/log_appointment', methods=['POST'])
-def log_appointment():
-    """
-    Logs the appointment into the database
-    """
-    pass
+# @app.route('/log_in', methods=['GET', 'POST'])
+# def login():
+#     if request.methods == 'POST'
+#         session['card_num'] = request.form
 
 
-@app.route('/schedule')
+@app.route('/schedule', methods=['GET', 'POST'])
 def appointment():
+    if request.method == 'POST':
+        """
+        Logs the appointment into the database
+        """
+        sql_insert="INSERT INTO appointment VALUES ({},{},{},{})"
+        #sql_insert.format(session['card_num'], )
+
+        flash("Your appointment has been logged.")
+        return redirect(url_for('home'))
+
     """
     Finds all appointments in the next 7 days by hour.
     """
     week = []
     now = datetime.today()
-    for i in range(7):
+    for i in range(num_days):
         dt = now + timedelta(days=i)
         week.append("{}-{}-{}".format(dt.year, str(dt.month).zfill(2),
                     str(dt.day).zfill(2)))
@@ -89,9 +97,9 @@ def appointment():
 
     # [day][hour][minute][# appointments]
     appointments = [[[None for x in range(4)] for x in range(12)]
-                    for x in range(7)]
+                    for x in range(num_days)]
 
-    for i in range(7):
+    for i in range(num_days):
         for j in range(12):
             hour = str(j + 9)
             alloted = allotment[hour]
@@ -99,7 +107,7 @@ def appointment():
                 appointments[i][j][k] = alloted
 
     connect_db()
-    for i in range(7):
+    for i in range(num_days):
         data = g.cursor.execute(sql_query.format(week[i])).fetchall()
         for segment in data:
             hour = segment[0]-9
