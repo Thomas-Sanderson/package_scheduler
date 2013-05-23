@@ -39,3 +39,4 @@ package_app_settings.py
 include/
 .Python
 *.db
+settings.package_center.prod
