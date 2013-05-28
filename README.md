@@ -1,20 +1,25 @@
-package_scheduler
-=================
+#package scheduler
+---
 
-Allow students to schedule pick up times for the packages to ease congestion.
-
-
-Settings File
-===========
-The settings file for the flask app is located in the secrets repo
+Allow students to schedule pick up times for the packages to ease congestion during peak hours.  
+The idea is that a very clear visualization of the volume of traffic for each hour will encourage students to come to the package center at early and late hours.
 
 
-Resource
-===========
+##Configuration
+---
+The settings and configuration files for the flask app is located in the adi secrets repo.  
+You should use a virtualenv and install the requirements to the environment.
+
+    virtualenv --no-site-packages .
+    pip install -r requirements.txt
+
+
+##Resource
+---
 https://columbiauniversity.ikontrac.com/external/kiosks/mail/pickup/
 
-Package Center Meeting Notes 4/22
-=============
+##Package Center Meeting Notes 4/22
+---
 
 Timeline
 
@@ -36,3 +41,4 @@ Additional notes
 * Consider methods for dealing with violations/no-shows
 * Who should we bring in for front-end?
 * Explore heat-map like visualizations using our data or the university's
+
