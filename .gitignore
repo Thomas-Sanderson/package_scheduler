@@ -40,7 +40,6 @@ include/
 .Python
 
 # Config
-config/allotment.py
 config/app_settings.py
 config/db_settings.py
 
