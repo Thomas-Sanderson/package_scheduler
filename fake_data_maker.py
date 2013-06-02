@@ -1,0 +1,60 @@
+
+from random import randint
+from sys import argv
+import os
+import psycopg2
+
+
+if len(argv) != 2:
+    print 'please pass in the number of rows you would like to produce!'
+    print 'usuage:\tpython fake_data_maker.py <num rows>'
+    exit(1)
+
+
+with open('fake_data.txt', 'w+') as f:
+	for x in range(int(argv[1])):
+	    uni = ''
+	    for i in range(3):
+	        uni += str(unichr(randint(ord('a'), ord('z'))))
+	    uni += str(randint(1000, 9999))
+
+	    card_num = str(randint(10000, 99999))
+	    appointment_date = "2013-06-{}".format(str(randint(1, 30)).zfill(2))
+	    time = "{}:{}".format(str(randint(0, 23)).zfill(2), str(randint(0, 3)*15).zfill(2))
+
+	    f.write("('{}', {}, '{}', '{}')\n".format(uni, card_num, appointment_date, time))
+
+pg_host    = os.getenv('PG_HOST')
+pg_db      = os.getenv('PG_DB')
+pg_user    = os.getenv('PG_USER')
+pg_pass    = os.getenv('PG_PASSWORD')
+db_connection_str = "host='{}' dbname='{}' user='{}' password='{}'".format(
+    pg_host, pg_db, pg_user, pg_pass)
+print db_connection_str
+
+db = psycopg2.connect(db_connection_str)
+cursor = db.cursor()
+
+with open('fake_data.txt', 'r') as f:
+    data = f.read().strip().split('\n')
+
+insert_str = """
+    INSERT INTO appointments (uni, card_number, appointment_date, time)
+    VALUES """
+
+group = 20
+
+for index in range(len(data)/group+1):
+    rows = data[index*group : (index+1)*group - 1]
+    if len(rows) == 0:
+        break
+    temp = str(insert_str)
+    temp += ', '.join(rows)
+    temp += ';'
+    print temp
+    cursor.execute(temp)
+    db.commit()
+
+cursor.close()
+db.close()
+
