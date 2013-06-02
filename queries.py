@@ -13,9 +13,17 @@ def next_week_appointments(db_conn):
     FROM    appointments A
     WHERE   A.appointment_date >= '{}'
         AND A.appointment_date < '{}'
-    ORDER   BY A.appointment_date;
+    ORDER   BY A.appointment_date asc,
+        A.time asc;
     """.format(now.isoformat(), (now+dt.timedelta(days=7)).isoformat())
     print query_str
+    cursor = db_conn.cursor()
+    cursor.execute(query_str)
+    db_conn.commit()
+    data = cursor.fetchall()
+    cursor.close()
+    db_conn.close()
+    return data
 
 
 def check_time_slot(db, timeslot, week):
