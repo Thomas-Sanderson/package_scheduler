@@ -41,5 +41,9 @@ include/
 
 # Config
 config/app_settings.py
-config/db_settings.py
+config/settings.*
+
+# Testing
+fake_data.txt
+
 
