@@ -8,15 +8,18 @@ The idea is that a very clear visualization of the volume of traffic for each ho
 ##Configuration
 ---
 The settings and configuration files for the flask app is located in the adi secrets repo.  
-You should use a virtualenv and install the requirements to the environment.
+You should use a virtualenv and install the requirements to the environment.  
+Add the database settings to the environment.
 
     virtualenv --no-site-packages .
     pip install -r requirements.txt
+    source config/settings.packages.prod
 
 
 ##Resource
 ---
 https://columbiauniversity.ikontrac.com/external/kiosks/mail/pickup/
+
 
 ##Package Center Meeting Notes 4/22
 ---
