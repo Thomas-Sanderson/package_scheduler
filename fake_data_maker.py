@@ -4,11 +4,32 @@ from sys import argv
 import os
 import psycopg2
 
+def connect_db():
+    pg_host    = os.getenv('PG_HOST')
+    pg_db      = os.getenv('PG_DB')
+    pg_user    = os.getenv('PG_USER')
+    pg_pass    = os.getenv('PG_PASSWORD')
+    db_connection_str = "host='{}' dbname='{}' user='{}' password='{}'".format(
+        pg_host, pg_db, pg_user, pg_pass)
+    print db_connection_str
+    db = psycopg2.connect(db_connection_str)
+    return db
 
 if len(argv) != 2:
     print 'please pass in the number of rows you would like to produce!'
     print 'usuage:\tpython fake_data_maker.py <num rows>'
     exit(1)
+
+if argv[1] == 'clear':
+    db = connect_db()
+    cursor = db.cursor()
+    clear_str = "DELETE FROM appointments WHERE 0=0;"
+    cursor.execute(clear_str)
+    db.commit()
+    cursor.close()
+    db.close()
+    print 'rows deleted from appointments'
+    exit(0)
 
 
 with open('fake_data.txt', 'w+') as f:
@@ -24,15 +45,7 @@ with open('fake_data.txt', 'w+') as f:
 
 	    f.write("('{}', {}, '{}', '{}')\n".format(uni, card_num, appointment_date, time))
 
-pg_host    = os.getenv('PG_HOST')
-pg_db      = os.getenv('PG_DB')
-pg_user    = os.getenv('PG_USER')
-pg_pass    = os.getenv('PG_PASSWORD')
-db_connection_str = "host='{}' dbname='{}' user='{}' password='{}'".format(
-    pg_host, pg_db, pg_user, pg_pass)
-print db_connection_str
-
-db = psycopg2.connect(db_connection_str)
+db = connect_db()
 cursor = db.cursor()
 
 with open('fake_data.txt', 'r') as f:
