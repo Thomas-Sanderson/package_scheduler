@@ -29,8 +29,12 @@ class Week:
                 "sunday"]
         string = ""
         for a in range(7):
+            hour = 0
             string += "{}\n".format(week[(a+self.now) % 7])
+            string += "\t00\t15\t30\t45\n"
             for b in self.slots[a]:
+                string += '{}\t'.format(hour)
+                hour += 1
                 for c in b:
                     string += "{}\t".format(c)
                 string += '\n'
