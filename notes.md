@@ -1,15 +1,35 @@
 
-##TO DO:
+##TO BE TESTED:
 
-- test Week instantiation
+####main
+
+- week
+  - ~~instantiation~~
+  - ~~str~~
+
+- queries
+  - ~~next\_week\_appointments~~
+  - ~~check\_time\_slot~~
+
+- scheduler
+
+##TO BE WRITTEN
+
+- scheduler
+  - logged\_in
+  - has\_package
+  - appointment
+
+####util
+
+- fake\_data\_maker
+
 
 
 ##TO REVERT
 
-- week parameters should not allow instantiation w/o arg appointments
-- remove print statements
+- remove all print statements
   - queries.next\_week\_appointments
-
-
+  - week instantiation
 
 
