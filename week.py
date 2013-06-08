@@ -28,7 +28,7 @@ class Week:
                     week_array[i][j].append(allotment.next_week[i % 7][j])
 
         # limiting array to only the next 7 days
-        self.now = dt_date.today().weekday()
+        self.now = dt_date.today().weekday()+1
         self.slots = week_array[self.now:self.now+7]
 
         # inserting appointments into the array for the week

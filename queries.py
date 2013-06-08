@@ -52,7 +52,8 @@ def check_time_slot(db_conn, timeslot, this_week):
                timeslot.strftime('%H:%M'))
     cursor = db_conn.cursor()
     cursor.execute(query_str)
-    num = cursor.fetchall()
+    num = cursor.fetchall()[0][0]
+    cursor.close()
 
     days = (timeslot-dt.datetime.today()).days
     hours = timeslot.hour
