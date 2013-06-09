@@ -91,3 +91,28 @@ def make_appointment(db_conn, uni, card_number, timeslot):
     cursor.close()
     db_conn.commit()
 
+
+def get_time_slot(db_conn, timeslot):
+    """ Grabs all the appointments for the specified timeslot
+
+        PARAMETERS:
+        db_conn : postgres db connection
+        timeslot : datetime
+    """
+
+    query_str = """
+    SELECT  *
+    FROM    appointments A
+    WHERE   A.appointment_date = '{}'
+        AND A.time = '{};'
+    """.format(timeslot.strftime('%Y-%m-%d'),
+               timeslot.strftime('%H:%M'))
+    print query_str
+
+    cursor = db_conn.cursor()
+    cursor.execute(query_str)
+    data = cursor.fetchall()
+    cursor.close()
+
+    return data
+
