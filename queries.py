@@ -116,3 +116,28 @@ def get_time_slot(db_conn, timeslot):
 
     return data
 
+
+def log_appointment(db_conn, uni, card_number, timeslot):
+    """ Logs the triggered appointment into the 'triggered' table in the db
+
+        PARAMETERS:
+        db_conn : postgres db connection
+        uni : 6-7 character columbia identifier
+        card_number : 9 character columbia id card number
+        timeslot : datetime object representing the time the appointment
+                   was triggered
+    """
+
+    insert_str = """
+    INSERT INTO triggered
+        (uni, card_number, appointment_date, time)
+    VALUES
+        ('{}',{},'{}','{}');
+    """.format(uni, card_number, timeslot.strftime('%Y-%m-%d'),
+               timeslot.strftime('%H:%M'))
+    print insert_str
+    cursor = db_conn.cursor()
+    cursor.execute(insert_str)
+    cursor.close()
+    db_conn.commit()
+
