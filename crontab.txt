@@ -1,0 +1,1 @@
+*/15 * * * * python ~/github/package_scheduler/trigger_appointments.py
