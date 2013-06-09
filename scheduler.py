@@ -41,8 +41,6 @@ def close_db():
     g.db.close()
 
 
-
-
 def logged_in():
     """ Confirms that a user has a package
     """
@@ -60,10 +58,27 @@ def has_package(uni):
     pass
 
 
+def room_for_appointment(timeslot):
+    """ Makes a last chance check that there is still a slot available for the
+        chosen timeslot.
+    """
+    pass
+
+
+@app.route('/make_appointment', methods=['POST'])
+def make_appointment():
+    """ Logs the appointment and inserts the new appointment to the database.
+        Before logging must call room_for_appointments() to avoid overbooking.
+    """
+    pass
+
+
 @app.route('/appointment')
 def appointment():
+    """ Loads the main screen that displays all of the timeslots. Their
+        availablilities will be represented in a heat map fashion.
+    """
     appointments = queries.next_week_appointments(g.db)
-
     return redirect(url_for('home'))
     #return render_template('choose.html')
 
