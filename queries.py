@@ -2,6 +2,7 @@
 import datetime as dt
 from config import allotment
 
+
 def next_week_appointments(db_conn):
     """ Returns all appointments from the next week.
         Starts with the appointments from tomorrow
@@ -33,6 +34,7 @@ def next_week_appointments(db_conn):
         print row[0], row[1], int(row[2])
     return data
 
+
 def check_time_slot(db_conn, timeslot, this_week):
     """ checks if there are still spots open in the time slot
         return True if there's space
@@ -41,7 +43,7 @@ def check_time_slot(db_conn, timeslot, this_week):
         PARAMETERS:
         db_conn : postgres db connection
         timeslot : datetime
-        this_week : Week
+        this_week : Week object
     """
     query_str = """
     SELECT  COUNT(*)
@@ -64,4 +66,28 @@ def check_time_slot(db_conn, timeslot, this_week):
         return True
     else:               # filled up
         return False
+
+
+def make_appointment(db_conn, uni, card_number, timeslot):
+    """ Logs the new bookings into the appointments table in the db
+
+        PARAMETERS:
+        db_conn : postgres db connection
+        uni : 6-7 character columbia identifier
+        card_number : 9 character columbia id card number
+        timeslot : datetime object representing the package appointment
+    """
+
+    insert_str = """
+    INSERT INTO appointments
+        (uni, card_number, appointment_date, time)
+    VALUES
+        ('{}',{},'{}','{}');
+    """.format(uni, card_number, timeslot.strftime('%Y-%m-%d'),
+               timeslot.strftime('%H:%M'))
+    print insert_str
+    cursor = db_conn.cursor()
+    cursor.execute(insert_str)
+    cursor.close()
+    db_conn.commit()
 
