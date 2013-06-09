@@ -30,10 +30,6 @@ def trigger_pickup(db, data):
     # interact with ricoh
 
     print "packages for {} triggered at {}".format(uni, now)
-
-    with open('triggered.txt', 'w') as f:
-        f.write("{}\n".format(dt.today().isoformat())
-
     queries.log_appointmen(db, uni, card_num, dt.today())
 
 

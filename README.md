@@ -12,6 +12,7 @@ You should use a virtualenv and install the requirements to the environment.
 Add the database settings to the environment.
 
     virtualenv --no-site-packages .
+    source bin/activate
     pip install -r requirements.txt
     source config/settings.packages.prod
 
