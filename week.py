@@ -27,9 +27,9 @@ class Week:
                 for k in range(4):
                     week_array[i][j].append(allotment.next_week[i % 7][j])
 
-        # limiting array to only the next 7 days
+        # limiting array to only the next 4 days
         self.now = dt_date.today().weekday()+1
-        self.slots = week_array[self.now:self.now+7]
+        self.slots = week_array[self.now:self.now+4]
 
         # inserting appointments into the array for the week
         for date, time, num in appointments:
@@ -44,7 +44,7 @@ class Week:
         week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
                 "sunday"]
         string = ""
-        for a in range(7):
+        for a in range(4):
             hour = 0
             string += "{}\n".format(week[(a+self.now) % 7])
             string += "\t00\t15\t30\t45\n"
