@@ -1,9 +1,7 @@
 
 import datetime as dt
-from config import allotment
 
-
-def next_week_appointments(db_conn):
+def next_4day_appointments(db_conn):
     """ Returns all appointments from the next week.
         Starts with the appointments from tomorrow
 
