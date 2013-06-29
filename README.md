@@ -39,6 +39,7 @@ Features to work on
 * flexibility to extend times and days (for peak package season)
 * support for satellite locations (via e-mails?)
 * perhaps "appointment tickets" to skip lines
+* admin page for package center manager to set allocation
 
 Additional notes
 
