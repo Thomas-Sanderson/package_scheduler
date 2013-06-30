@@ -1,9 +1,7 @@
 
 import datetime as dt
-from config import allotment
 
-
-def next_week_appointments(db_conn):
+def next_4day_appointments(db_conn):
     """ Returns all appointments from the next week.
         Starts with the appointments from tomorrow
 
@@ -23,7 +21,7 @@ def next_week_appointments(db_conn):
                 A.time
     ORDER   BY  A.appointment_date asc,
                 A.time asc;
-    """.format(now.isoformat(), (now+dt.timedelta(days=7)).isoformat())
+    """.format(now.isoformat(), (now+dt.timedelta(days=4)).isoformat())
     cursor = db_conn.cursor()
     cursor.execute(query_str)
     db_conn.commit()
