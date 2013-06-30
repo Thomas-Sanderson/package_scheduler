@@ -82,6 +82,10 @@ def appointment():
 
 @app.route('/')
 def home():
+    uni = request.args.get("uni")
+    print uni
+    if has_package(uni):
+        return "T"
     return render_template('home.html')
 
 
