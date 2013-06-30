@@ -1,11 +1,11 @@
+
 from flask import Flask, render_template, request, flash, \
     url_for, g, redirect
-
-from config.allotment import current_week, next_week
 import queries
-
-from os import getenv
+import week
 import psycopg2
+from datetime import date, timedelta
+from os import getenv
 
 import ricoh
 
@@ -20,9 +20,11 @@ db_connection_str = "host='{}' dbname='{}' user='{}' password='{}'".format(
     pg_host, pg_db, pg_user, pg_pass)
 
 
+
 @app.before_request
 def before_request():
     g.db = connect_db()
+    g.week = week.Week(queries.next_4day_appointments(connect_db()))
 
 
 @app.teardown_request
@@ -50,10 +52,13 @@ def has_package(uni):
     """
     return ricoh.package_info(uni)
 
-def room_for_appointment(timeslot):
+def room_for_appointment(week, timeslot):
     """ Makes a last chance check that there is still a slot available for the
         chosen timeslot.
+        timeslot : datetime object
     """
+
+
     pass
 
 
@@ -82,4 +87,3 @@ def home():
 
 if __name__ == '__main__':
     app.run()
-
