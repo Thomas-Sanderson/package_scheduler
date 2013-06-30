@@ -5,6 +5,7 @@ import ssl
 
 #GET request, needs 1 param via string.format() function
 
+
 ID_URL = "https://columbiauniversity.ikontrac.com/external/kiosks/mail/pickup/getEmployeeId.cfm?loginType=custom09&id={}"
 
 #POST with studentid={uni} as param
@@ -32,11 +33,17 @@ def package_info(uni):
     response = s.post(UNI_URL,data=uni_data, verify=False)
 
     index = response.text.find('displayMessage("')
+   
     if index == -1: #card not found
-        index = response.text.find('displayMessage(')
-        index = response.text.find('displayMessage(',index+1)
-    
-    print response.text[index-100:index+30]
+        return None 
+
+    if response.text.find('have not received') !=-1:
+        return False
+
+    if response.text.find('have received') != -1:
+        return True    
+
+    return None
 
 
 def uni_from_id(id_num):
@@ -46,6 +53,5 @@ def uni_from_id(id_num):
 
     formatted_url = ID_URL.format(id_num)
     response = s.get(formatted_url)
-    
-    print response.text
+    return response.text.strip() 
 
