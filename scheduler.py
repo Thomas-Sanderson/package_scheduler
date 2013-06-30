@@ -7,6 +7,8 @@ import queries
 from os import getenv
 import psycopg2
 
+import ricoh
+
 app = Flask(__name__)
 app.config.from_object('config.app_settings')
 
@@ -41,22 +43,12 @@ def close_db():
     g.db.close()
 
 
-def logged_in():
-    """ Confirms that a user has a package
-    """
-    if has_package():
-        return redirect(url_for('appointment'))
-    else:
-        flash("Sorry, you don't have a pacakge waiting for you.")
-        return redirect(url_for('home'))
-
 
 def has_package(uni):
     """ Determines if a user has a package waiting for them.
         Needs to implement a request to the Ricoh database.
     """
-    pass
-
+    return ricoh.package_info(uni)
 
 def room_for_appointment(timeslot):
     """ Makes a last chance check that there is still a slot available for the
