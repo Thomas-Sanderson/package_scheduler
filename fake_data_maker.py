@@ -40,7 +40,7 @@ with open('fake_data.txt', 'w+') as f:
 	    uni += str(randint(1000, 9999))
 
 	    card_num = str(randint(10000, 99999))
-	    appointment_date = "2013-06-{}".format(str(randint(1, 30)).zfill(2))
+	    appointment_date = "2013-07-{}".format(str(randint(1, 30)).zfill(2))
 	    time = "{}:{}".format(str(randint(0, 23)).zfill(2), str(randint(0, 3)*15).zfill(2))
 
 	    f.write("('{}', {}, '{}', '{}')\n".format(uni, card_num, appointment_date, time))
