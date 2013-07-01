@@ -28,8 +28,6 @@ def next_4day_appointments(db_conn):
     data = cursor.fetchall()
     cursor.close()
     db_conn.close()
-    for row in data:
-        print row[0], row[1], int(row[2])
     return data
 
 
