@@ -65,8 +65,6 @@ def room_for_appointment(week, timeslot):
         chosen timeslot.
         timeslot : datetime object
     """
-
-
     pass
 
 
@@ -83,9 +81,16 @@ def appointment():
     """ Loads the main screen that displays all of the timeslots. Their
         availablilities will be represented in a heat map fashion.
     """
-    appointments = queries.next_week_appointments(g.db)
-    return redirect(url_for('home'))
-    #return render_template('choose.html')
+
+    first = date.today()+timedelta(days=1)
+    days = []
+    for i in range(4):
+        days.append(first+timedelta(days=i))
+    """ PASSED IN VALUES
+        days = 4 relevant dates
+        week = week object
+    """
+    return render_template('choose.html', days=days, week=g.week.slots)
 
 
 @app.route('/')
