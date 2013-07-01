@@ -10,6 +10,7 @@ next_week_str = (this_week + dt_delta(weeks=1)).strftime("%m-%d-%Y")
 this_week = getattr(__import__('config.allotment', fromlist=[this_week_str]), this_week_str)
 next_week = getattr(__import__('config.allotment', fromlist=[next_week_str]), next_week_str)
 
+
 class Week:
 
     def __init__(self, appointments):
@@ -38,13 +39,13 @@ class Week:
         self.slots = week_array[self.now:self.now+4]
 
         # inserting appointments into the array for the week
+
         for date, time, num in appointments:
             day = (date-dt_date.today()).days-1
             hour = time.hour
             minute = time.minute/15
-            if self.slots[day][hour][minute] != None:
+            if self.slots[day][hour][minute] is not None:
                 self.slots[day][hour][minute] -= int(num)
-
 
     def __str__(self):
         week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
@@ -61,4 +62,3 @@ class Week:
                     string += "{}\t".format(c)
                 string += '\n'
         return string
-
