@@ -1,49 +1,73 @@
+
 {% extends "base.html" %}
 
 {% block title %}
 Choose
 {% endblock %}
 
+{# passed in values:
+    days : 4 value array of relevant dates
+    week : week object of openings
+ #}
+
+
 {% block body %}
 
-
 <form name="appointment" action"/log_appointment" method="POST">
-{% for day in app %}
-{% set weekloop = loop %}
-<div class="span4">
-  <p><strong>{{ week[loop.index0] }}</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>hour</th>
-        <th>00</th>
-        <th>15</th>
-        <th>30</th>
-        <th>45</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for hour in day %}
-      <tr>          
-        <td>{{ (loop.index0 + 9)%12 }}</td>
-        {% for minute in hour %}
-          <td class="busy-{{minute}}">
-            <input type="radio" name="choice" value="{{ (week[weekloop.index0],(loop.index+9)%12, minute) }}"
-              {% if minute == 0 %} disabled {% endif %} >
-              {{minute}}
-            </input>
-          </td>
-        {% endfor %}  
-      </tr> 
-    {% endfor %}
-      
-    </tbody>
-  </table>
-</div>
+{% for day in days %}
+{% set dayloop = loop %}
+
+  <div class="span3">
+    <p>
+      {# day header #}
+      {{ day }}
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>hour</th>
+          <th>00</th>
+          <th>15</th>
+          <th>30</th>
+          <th>45</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {# Process the relevant day of the week #}
+      {% for hour in week[loop.index0] %}
+        {# Skips if first value of the hour is NULL / "None" #}
+        {% if hour[0] is not none %}
+        {% set hourloop = loop %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            {# Set minute to 0 if it's under 0 #}
+            {% for minute in hour %}
+
+              {% if minute < 0 %}
+                {% set minute = 0 %}
+              {% endif %}
+
+              <td class="busy-{{ minute }}">
+                <input type="radio" name="choice" value=0
+                  value="{{ week[ dayloop.index0 ][ hourloop.index0 ][ loop.index0 ] }}"
+                  {% if minute == 0 %} disabled {% endif %} >
+                  {{ minute }}
+                  <!-- week[ {{dayloop.index0}} ][ {{hourloop.index0}} ][ {{loop.index0}} ] -->
+                </input>
+              </td>
+            {% endfor %}
+          </tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
 {% endfor %}
 
 <input type="submit" value="Make Appointment">
-
 </form>
 
 {% endblock %}
