@@ -1,10 +1,10 @@
 
 from flask import Flask, render_template, request, flash, \
-    url_for, g, redirect
+    url_for, g, redirect, session
 import queries
 import week
 import psycopg2
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from os import getenv
 
 import ricoh
@@ -45,7 +45,6 @@ def close_db():
     g.db.close()
 
 
-
 def has_package(uni):
     """ Determines if a user has a package waiting for them.
         Needs to implement a request to the Ricoh database.
@@ -60,36 +59,49 @@ def room_for_appointment(week, timeslot):
     pass
 
 
-@app.route('/make_appointment', methods=['POST'])
-def make_appointment():
-    """ Logs the appointment and inserts the new appointment to the database.
-        Before logging must call room_for_appointments() to avoid overbooking.
-    """
-    pass
-
-
-@app.route('/appointment')
+@app.route('/appointment', methods=['GET', 'POST'])
 def appointment():
-    """ Loads the main screen that displays all of the timeslots. Their
-        availablilities will be represented in a heat map fashion.
-    """
+    if request.method == 'GET':
+        """ Loads the main screen that displays all of the timeslots. Their
+            availablilities will be represented in a heat map fashion.
+        """
+        first = date.today()+timedelta(days=1)
+        days = []
+        for i in range(4):
+            days.append(first+timedelta(days=i))
+        """ PASSED IN VALUES
+            days = 4 relevant dates
+            week = week object
+        """
+        return render_template('choose.html', days=days, week=g.week.slots)
 
-    first = date.today()+timedelta(days=1)
-    days = []
-    for i in range(4):
-        days.append(first+timedelta(days=i))
-    """ PASSED IN VALUES
-        days = 4 relevant dates
-        week = week object
-    """
-    return render_template('choose.html', days=days, week=g.week.slots)
+    else:
+        """ Logs the appointment and inserts the new appointment to the database.
+            Before logging must call room_for_appointments() to avoid overbooking.
+        """
+        # hacky hacky hacky, TODO: refactor
+        choice = request.form["choice"].replace('[','').replace(']','')
+        choice = choice.replace('(','').replace(')','').split(',')
+        for i in range(len(choice)):
+            choice[i] = int(choice[i].encode('ascii','ignore').strip())
+
+        day = date.today() + timedelta(days=choice[0]+1)
+        slot = datetime(day.year, day.month, day.day, choice[1]+1, choice[2]*15)
+        print slot
+        print 'session', session['uni']
+        # do last chance time slot check
+        # TODO: fix card number shit
+        queries.make_appointment(g.db, session['uni'], '2343', slot)
+        return redirect(url_for('home'))
 
 
 @app.route('/')
 def home():
     uni = request.args.get("uni")
     print uni
+    session['uni'] = uni
     if has_package(uni):
+        session['uni'] = uni
         return "T"
     return render_template('home.html')
 
