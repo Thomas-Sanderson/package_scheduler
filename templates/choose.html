@@ -13,7 +13,7 @@ Choose
 
 {% block body %}
 
-<form name="appointment" action"/log_appointment" method="POST">
+<form name="appointment" action"/appointment" method="POST">
 {% for day in days %}
 {% set dayloop = loop %}
 
@@ -50,11 +50,10 @@ Choose
               {% endif %}
 
               <td class="busy-{{ minute }}">
-                <input type="radio" name="choice" value=0
-                  value="{{ week[ dayloop.index0 ][ hourloop.index0 ][ loop.index0 ] }}"
+                <input type="radio" name="choice"
+                  value="{{ dayloop.index0, hourloop.index0, loop.index0 }}"
                   {% if minute == 0 %} disabled {% endif %} >
                   {{ minute }}
-                  <!-- week[ {{dayloop.index0}} ][ {{hourloop.index0}} ][ {{loop.index0}} ] -->
                 </input>
               </td>
             {% endfor %}
