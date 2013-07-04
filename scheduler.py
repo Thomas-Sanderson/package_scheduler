@@ -86,7 +86,7 @@ def appointment():
             choice[i] = int(choice[i].encode('ascii','ignore').strip())
 
         day = date.today() + timedelta(days=choice[0]+1)
-        slot = datetime(day.year, day.month, day.day, choice[1]+1, choice[2]*15)
+        slot = datetime(day.year, day.month, day.day, choice[1], choice[2]*15)
         print slot
         print 'session', session['uni']
         # do last chance time slot check
