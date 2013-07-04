@@ -22,7 +22,7 @@ $(document).ready(function(){
                     }).done(function(data){
                         console.log("data");
                         if(data=="T"){
-                            window.location.href="/choose.html";
+                            window.location.href="/appointment";
                         }
 
                         else{
