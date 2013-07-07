@@ -47,6 +47,13 @@ class Week:
             if self.slots[day][hour][minute] is not None:
                 self.slots[day][hour][minute] -= int(num)
 
+    def empty(self, i):
+        for hour in self.slots[i]:
+            for minute in hour:
+                if minute != None:
+                    return False
+        return True
+
     def __str__(self):
         week = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
                 "sunday"]
