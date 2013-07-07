@@ -65,9 +65,9 @@ def success():
 def appointment():
     if 'package' not in session or session['package'] == False:
         print 'oops'
-        flash("Sorry, you can't access the appointment page unless you have"+
+        message = ("Sorry, you can't access the appointment page unless you have" 
             " a package waiting for you.")
-        # TODO: figure out why message is flashed twice
+        flash(unicode(message), 'error')
         return redirect(url_for('home'))
 
     # Loads the main screen that displays all of the timeslots. Their
@@ -95,7 +95,7 @@ def appointment():
         slot = datetime(day.year, day.month, day.day, choice[1], choice[2]*15)
         print 'UNI:', session['uni']
         if room_for_appointment(slot) == False:
-            flash('Sorry, that slot is no longer available')
+            flash(u'Sorry, that slot is no longer available', 'error')
             return redirect(url_for('appointment'))
         # TODO: fix card number shit
         queries.make_appointment(g.db, session['uni'], '2343', slot)
@@ -110,7 +110,7 @@ def home():
         if has_package(request.form['uni']):
             return redirect(url_for('appointment'))
         else:
-            flash("Sorry, "+uni+", you don't have a package right now")
+            flash("Sorry, "+uni+", you don't have a package right now", 'error')
             return redirect(url_for('home'))
     else:   # GET
         return render_template('home.html')
