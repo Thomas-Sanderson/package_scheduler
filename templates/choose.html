@@ -41,7 +41,13 @@ Choose
         {% if hour[0] is not none %}
         {% set hourloop = loop %}
           <tr>
-            <td>{{ loop.index }}</td>
+            {% set hour_header = loop.index0 %}
+            {% if hour_header > 12 %}
+              {% set hour_header = hour_header - 12 %}
+            {% endif %}
+            <td>
+            {{ hour_header }}
+            </td>
             {# Set minute to 0 if it's under 0 #}
             {% for minute in hour %}
 
