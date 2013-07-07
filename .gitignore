@@ -39,6 +39,7 @@ nosetests.xml
 package_app_settings.py
 include/
 .Python
+log.txt
 
 # Config
 config/app_settings.py
