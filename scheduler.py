@@ -95,16 +95,19 @@ def appointment():
         return redirect(url_for('home'))
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    uni = request.args.get("uni")
-    print uni
-    session['uni'] = uni
-    if has_package(uni):
+    if request.method == 'POST':
+        uni = request.form['uni']
         session['uni'] = uni
-        return "T"
-    return render_template('home.html')
-
-
+        if has_package(request.form['uni']):
+            return redirect(url_for('appointment'))
+        else:
+            flash("Sorry, "+uni+", you don't have a package right now")
+            return redirect(url_for('home'))
+    else:   # GET
+        return render_template('home.html')
+    
 if __name__ == '__main__':
     app.run()
+
