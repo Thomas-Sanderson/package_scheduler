@@ -52,6 +52,10 @@ def room_for_appointment(week, timeslot):
     # timeslot : datetime object
     pass
 
+@app.route('/reservation')
+def success():
+    return render_template('success.html')
+
 
 @app.route('/appointment', methods=['GET', 'POST'])
 def appointment():
@@ -60,7 +64,8 @@ def appointment():
         print 'oops'
         flash("Sorry, you can't access the appointment page unless you have"+
             " a package waiting for you.")
-        return render_template('home.html')
+        # TODO: figure out why message is flashed twice
+        return redirect(url_for('home'))
 
     # Loads the main screen that displays all of the timeslots. Their
     # availablilities will be represented in a heat map fashion.
@@ -89,7 +94,7 @@ def appointment():
         # do last chance time slot check
         # TODO: fix card number shit
         queries.make_appointment(g.db, session['uni'], '2343', slot)
-        return redirect(url_for('home'))
+        return redirect(url_for('success'))
 
 
 @app.route('/', methods=['GET', 'POST'])
