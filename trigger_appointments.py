@@ -1,6 +1,8 @@
 
 import requests
 import queries
+import os
+import psycopg2
 from datetime import datetime as dt
 
 """ Called by a cron job to trigger the appointments at the packaging center.
@@ -27,17 +29,35 @@ def trigger_pickup(db, data):
         pickup.
     """
     uni, card_num = data[1:3]
+
     # interact with ricoh
 
     print "packages for {} triggered at {}".format(uni, now)
-    queries.log_appointmen(db, uni, card_num, dt.today())
+    queries.log_appointment(db, uni, card_num, dt.today())
+
+def log(reservations):
+    with open('log.txt', 'a+') as f:
+        f.write(str(now)+'\n')
+        for pickup in reservations:
+            f.write('\t'+str(pickup[1])+'\n')
 
 
 if __name__ == '__main__':
     db = connect_db()
 
-    for row in data:
+    if now.minute >= 45:
+        if now.hour == 23:
+            slot = dt(now.year, now.month, now.day+1, 0, 0)
+        else:
+            slot = dt(now.year, now.month, now.day, now.hour+1, 0)
+    else:
+        slot = dt(now.year, now.month, now.day, now.hour, (now.minute/15+1)*15)
+    print slot
+
+    reservations = queries.get_time_slot(db, slot)
+    for row in reservations:
         trigger_pickup(db, row)
 
+    log(reservations)
     close_db(db)
 

@@ -1,1 +1,0 @@
-10,25,40,55 * * * * . ~/github/package_scheduler/trigger_appointments.sh
