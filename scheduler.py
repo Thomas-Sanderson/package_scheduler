@@ -75,7 +75,8 @@ def appointment():
         first = date.today()+timedelta(days=1)
         days = []
         for i in range(4):
-            days.append(first+timedelta(days=i))
+            if g.week.empty(i) != True:
+                days.append(first+timedelta(days=i))
 
         # PASSED IN VALUES: days = 4 relevant dates, week = week object
         return render_template('choose.html', days=days, week=g.week.slots)
