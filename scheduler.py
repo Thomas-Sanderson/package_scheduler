@@ -42,9 +42,11 @@ def close_db():
 
 
 def has_package(uni):
-    return ricoh.package_info(uni)
     # Determines if a user has a package waiting for them.
     # Needs to implement a request to the Ricoh database.
+    package = ricoh.package_info(uni)
+    session["package"] = (True if package else False)
+    return package
 
 def room_for_appointment(week, timeslot):
     # Makes a last chance check that there is still a slot available for the
