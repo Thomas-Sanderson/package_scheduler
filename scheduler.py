@@ -48,11 +48,13 @@ def has_package(uni):
     session["package"] = (True if package else False)
     return package
 
-def room_for_appointment(week, timeslot):
+
+def room_for_appointment(timeslot):
     # Makes a last chance check that there is still a slot available for the
     # chosen timeslot.
     # timeslot : datetime object
-    pass
+    return queries.check_time_slot(g.db, timeslot, g.week)
+
 
 @app.route('/reservation')
 def success():
@@ -61,7 +63,6 @@ def success():
 
 @app.route('/appointment', methods=['GET', 'POST'])
 def appointment():
-
     if 'package' not in session or session['package'] == False:
         print 'oops'
         flash("Sorry, you can't access the appointment page unless you have"+
@@ -92,9 +93,10 @@ def appointment():
 
         day = date.today() + timedelta(days=choice[0]+1)
         slot = datetime(day.year, day.month, day.day, choice[1], choice[2]*15)
-        print slot
-        print 'session', session['uni']
-        # do last chance time slot check
+        print 'UNI:', session['uni']
+        if room_for_appointment(slot) == False:
+            flash('Sorry, that slot is no longer available')
+            return redirect(url_for('appointment'))
         # TODO: fix card number shit
         queries.make_appointment(g.db, session['uni'], '2343', slot)
         return redirect(url_for('success'))

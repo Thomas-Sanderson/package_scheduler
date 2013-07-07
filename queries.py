@@ -58,7 +58,7 @@ def check_time_slot(db_conn, timeslot, this_week):
     minutes = timeslot.minute/15
     slots = this_week.slots[days][hours][minutes]
 
-    if num < slots:     # open spots
+    if num <= slots:     # open spots
         return True
     else:               # filled up
         return False
