@@ -65,22 +65,21 @@ def check_time_slot(db_conn, timeslot, this_week):
         return False
 
 
-def make_appointment(db_conn, uni, card_number, timeslot):
+def make_appointment(db_conn, uni, timeslot):
     """ Logs the new bookings into the appointments table in the db
 
         PARAMETERS:
         db_conn : postgres db connection
         uni : 6-7 character columbia identifier
-        card_number : 9 character columbia id card number
         timeslot : datetime object representing the package appointment
     """
 
     insert_str = """
     INSERT INTO appointments
-        (uni, card_number, appointment_date, time)
+        (uni, appointment_date, time)
     VALUES
-        ('{}',{},'{}','{}');
-    """.format(uni, card_number, timeslot.strftime('%Y-%m-%d'),
+        ('{}','{}','{}');
+    """.format(uni, timeslot.strftime('%Y-%m-%d'),
                timeslot.strftime('%H:%M'))
     print insert_str
     cursor = db_conn.cursor()
@@ -114,23 +113,22 @@ def get_time_slot(db_conn, timeslot):
     return data
 
 
-def log_appointment(db_conn, uni, card_number, timeslot):
+def log_appointment(db_conn, uni, timeslot):
     """ Logs the triggered appointment into the 'triggered' table in the db
 
         PARAMETERS:
         db_conn : postgres db connection
         uni : 6-7 character columbia identifier
-        card_number : 9 character columbia id card number
         timeslot : datetime object representing the time the appointment
                    was triggered
     """
 
     insert_str = """
     INSERT INTO triggered
-        (uni, card_number, appointment_date, time)
+        (uni, appointment_date, time)
     VALUES
-        ('{}',{},'{}','{}');
-    """.format(uni, card_number, timeslot.strftime('%Y-%m-%d'),
+        ('{}','{}','{}');
+    """.format(uni, timeslot.strftime('%Y-%m-%d'),
                timeslot.strftime('%H:%M'))
     print insert_str
     cursor = db_conn.cursor()

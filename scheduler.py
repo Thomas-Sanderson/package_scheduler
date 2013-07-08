@@ -117,8 +117,7 @@ def appointment():
             flash(u'Sorry, that slot is no longer available', 'error')
             return redirect(url_for('appointment'))
 
-        # TODO: fix card number shit
-        queries.make_appointment(g.db, session['uni'], '2343', slot)
+        queries.make_appointment(g.db, session['uni'], slot)
         return redirect(url_for('success'))
 
 
