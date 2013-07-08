@@ -73,17 +73,14 @@ def make_appointment(db_conn, uni, timeslot):
         uni : 6-7 character columbia identifier
         timeslot : datetime object representing the package appointment
     """
-
-    insert_str = """
+    cursor = db_conn.cursor()
+    cursor.execute("""
     INSERT INTO appointments
         (uni, appointment_date, time)
     VALUES
-        ('{}','{}','{}');
-    """.format(uni, timeslot.strftime('%Y-%m-%d'),
-               timeslot.strftime('%H:%M'))
-    print insert_str
-    cursor = db_conn.cursor()
-    cursor.execute(insert_str)
+        (%s,%s,%s);
+    """,(uni, timeslot.strftime('%Y-%m-%d'),
+               timeslot.strftime('%H:%M')))
     cursor.close()
     db_conn.commit()
 
@@ -122,17 +119,14 @@ def log_appointment(db_conn, uni, timeslot):
         timeslot : datetime object representing the time the appointment
                    was triggered
     """
-
-    insert_str = """
+    cursor = db_conn.cursor()
+    cursor.execute("""
     INSERT INTO triggered
         (uni, appointment_date, time)
     VALUES
-        ('{}','{}','{}');
-    """.format(uni, timeslot.strftime('%Y-%m-%d'),
-               timeslot.strftime('%H:%M'))
-    print insert_str
-    cursor = db_conn.cursor()
-    cursor.execute(insert_str)
+        (%s,%s,%s);
+    """,(uni, timeslot.strftime('%Y-%m-%d'),
+               timeslot.strftime('%H:%M')))
     cursor.close()
     db_conn.commit()
 
