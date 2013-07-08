@@ -28,7 +28,6 @@ def next_4day_appointments(db_conn):
     db_conn.commit()
     data = cursor.fetchall()
     cursor.close()
-    db_conn.close()
     return data
 
 
