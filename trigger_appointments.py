@@ -28,12 +28,12 @@ def trigger_pickup(db, data):
     """ Uses a POST request to connect to the Ricoh server and trigger a single
         pickup.
     """
-    uni, card_num = data[1:3]
+    uni = data[1]
 
     # interact with ricoh
 
     print "packages for {} triggered at {}".format(uni, now)
-    queries.log_appointment(db, uni, card_num, dt.today())
+    queries.log_appointment(db, uni, dt.today())
 
 def log(reservations):
     with open('log.txt', 'a+') as f:
