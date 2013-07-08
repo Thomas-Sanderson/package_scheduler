@@ -62,8 +62,8 @@ def check_other_appointments():
     if len(data) == 0:
         return None
     else:
-        date = data[0][3]
-        time = data[0][4]
+        date = data[0][2]
+        time = data[0][3]
         message = ('Sorry, {}, you already have a reservation for {}/{} '
             +'at {}:{}')
         message = message.format(session['uni'],date.month, date.day, time.hour, time.minute)
