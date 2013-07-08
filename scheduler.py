@@ -57,6 +57,7 @@ def room_for_appointment(timeslot):
 
 
 def check_other_appointments():
+    # Check to see if the user has already made an appointment
     data = queries.check_for_uni(g.db, session['uni'])
     if len(data) == 0:
         return None
@@ -134,7 +135,8 @@ def home():
             return redirect(url_for('home'))
     else:   # GET
         return render_template('home.html')
-    
+
+
 if __name__ == '__main__':
     app.run()
 
