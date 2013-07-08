@@ -56,6 +56,20 @@ def room_for_appointment(timeslot):
     return queries.check_time_slot(g.db, timeslot, g.week)
 
 
+def check_other_appointments():
+    data = queries.check_for_uni(g.db, session['uni'])
+    if len(data) == 0:
+        return None
+    else:
+        date = data[0][3]
+        time = data[0][4]
+        message = ('Sorry, {}, you already have a reservation for {}/{} '
+            +'at {}:{}')
+        message = message.format(session['uni'],date.month, date.day, time.hour, time.minute)
+        print message
+        return message
+
+
 @app.route('/reservation')
 def success():
     return render_template('success.html')
@@ -68,6 +82,11 @@ def appointment():
         message = ("Sorry, you can't access the appointment page unless you have" 
             " a package waiting for you.")
         flash(unicode(message), 'error')
+        return redirect(url_for('home'))
+
+    other_appointment = check_other_appointments()
+    if other_appointment != None:
+        flash(unicode(other_appointment), 'error')
         return redirect(url_for('home'))
 
     # Loads the main screen that displays all of the timeslots. Their
@@ -97,6 +116,7 @@ def appointment():
         if room_for_appointment(slot) == False:
             flash(u'Sorry, that slot is no longer available', 'error')
             return redirect(url_for('appointment'))
+
         # TODO: fix card number shit
         queries.make_appointment(g.db, session['uni'], '2343', slot)
         return redirect(url_for('success'))

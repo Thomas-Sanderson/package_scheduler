@@ -1,6 +1,7 @@
 
 import datetime as dt
 
+
 def next_4day_appointments(db_conn):
     """ Returns all appointments from the next week.
         Starts with the appointments from tomorrow
@@ -136,4 +137,25 @@ def log_appointment(db_conn, uni, card_number, timeslot):
     cursor.execute(insert_str)
     cursor.close()
     db_conn.commit()
+
+
+def check_for_uni(db_conn, uni):
+    """ Checks to see if a certain uni has already made an appointment in the
+        coming 4 days.
+    """
+    query_str = """
+    SELECT *
+    FROM appointments
+    WHERE uni = '{}' AND
+        appointment_date >= '{}' AND
+        appointment_date < '{}';
+    """.format(uni, dt.datetime.today().strftime('%Y-%m-%d'),
+            (dt.datetime.today()+dt.timedelta(days=5)).strftime('%Y-%m-%d'))
+    print query_str
+    cursor = db_conn.cursor()
+    cursor.execute(query_str)
+    data = cursor.fetchall()
+    cursor.close()
+    print data
+    return data
 
