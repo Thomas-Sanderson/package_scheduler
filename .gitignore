@@ -47,5 +47,6 @@ config/settings.*
 
 # Testing
 fake_data.txt
+test.py
 
 
